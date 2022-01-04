@@ -4,10 +4,8 @@ import dds_topic_1_subscriber as sub_1
 
 import rticonnextdds_connector as rti
 import threading, queue
-import os
-from time import sleep
 
-connector = rti.Connector("time_based_dds_app_2ParticipantLibrary::time_based_dds_app_2Participant", "ParticipantDescriptor.xml")
+connector = rti.Connector("time_based_dds_app_2ParticipantLibrary::time_based_dds_app_2Participant", "/app/ParticipantDescriptor.xml")
 lock = threading.RLock()
 
 q = queue.Queue()

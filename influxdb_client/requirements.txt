@@ -1,0 +1,2 @@
+influxdb-client[ciso]
+rticonnextdds_connector
