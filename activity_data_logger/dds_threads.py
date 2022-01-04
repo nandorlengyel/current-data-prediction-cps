@@ -1,7 +1,6 @@
 import abc
 from abc import ABCMeta
 import threading
-import rticonnextdds_connector as rti
 import time
 
 class ReaderThread(threading.Thread, metaclass=ABCMeta):

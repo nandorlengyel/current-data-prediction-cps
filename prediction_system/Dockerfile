@@ -4,5 +4,5 @@ COPY . /app
 RUN chmod +x /app/*.py
 RUN pip install -r /app/requirements.txt
 RUN apt-get update
-ENTRYPOINT ["python"]
+ENTRYPOINT [ "python" ]
 CMD ["/app/main.py"]		
