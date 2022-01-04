@@ -1,4 +1,4 @@
-FROM library/ubuntu:bionic
+FROM python:3.9
 ENV PYTHONUNBUFFERED=1
 ADD ./dds_topic_0_subscriber.py dds_topic_0_subscriber.py
 ADD ./dds_topic_1_subscriber.py dds_topic_1_subscriber.py
@@ -8,6 +8,7 @@ ADD ./dds_threads.py dds_threads.py
 RUN apt -y update && \
     apt -y upgrade && \
     apt -y install python3-pip && \
-    pip3 install rticonnextdds_connector && \
+    pip install rticonnextdds_connector && \
     chmod +x ./*.py
-CMD ["./main.py"]		
+ENTRYPOINT [ "python" ]
+CMD ["./main.py"]	

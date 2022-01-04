@@ -55,13 +55,13 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
     def write_data(self):
         while True:
             # IMPORTANT: if app is a data source, then uncomment next line, and remove 'self.cache.append(self.queue.get())' line
-            # time.sleep(2)
-            self.cache.append(self.queue.get())
+            time.sleep(2)
+            # self.cache.append(self.queue.get())
             with self.lock: # Protect access to methods on the same Connector                 
                 output = self.connector.get_output(self.publisher_name + "::" + self.data_writer_name)      
                 self.produce_data(output)          
             # IMPORTANT: if app is a data source, remove next line
-            self.queue.task_done()
+            # self.queue.task_done()
             
     @abc.abstractmethod
     def produce_data(self, output):
