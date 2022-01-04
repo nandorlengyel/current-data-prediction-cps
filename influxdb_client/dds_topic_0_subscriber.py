@@ -1,7 +1,9 @@
 from dds_threads import ReaderThread
+from influx_client import write_to_influx
+from datetime import datetime as dt
 
 class dds_topic_0Reader(ReaderThread):
 	def process_data(self, sample):
-		print(self.topic_name + " data received: ", sample.get_dictionary())
-		# sample_dict = sample.get_dictionary()
-		# self.queue.put({"dds_topic_0":sample_dict})	
+		data = sample.get_dictionary()
+		print(self.topic_name + " data received: ", data)
+		write_to_influx("CurrentData", data['currentData'], dt.strptime(data['timeStamp'], '%Y-%m-%d %H:%M:%S').astimezone().isoformat())
