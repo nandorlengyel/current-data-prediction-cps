@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="6.0.0" xsi:noNamespaceSchemaLocation="http://community.rti.com/schema/6.0.0/rti_dds_profiles.xsd">
+    <qos_library name="QosLibrary">
+        <qos_profile base_name="BuiltinQosLib::Generic.StrictReliable" is_default_qos="true" name="DefaultProfile">
+            <participant_qos>
+                <participant_name>
+                    <name>time_based_dds_app_1</name>
+                </participant_name>
+            </participant_qos>
+        </qos_profile>
+    </qos_library>
+    <types>
+        <struct extensibility="extensible" name="CurrentData">
+            <member name="timeStamp" stringMaxLength="30" type="string"/>
+            <member name="currentData" type="float"/>
+        </struct>
+    </types>
+    <domain_library name="DDSDomainLibrary">
+        <domain domain_id="0" name="DDSDomain">
+            <register_type name="CurrentData" type_ref="CurrentData"/>
+            <topic name="dds_topic_0" register_type_ref="CurrentData"/>
+        </domain>
+    </domain_library>
+    <domain_participant_library name="time_based_dds_app_1ParticipantLibrary">
+        <domain_participant domain_ref="DDSDomainLibrary::DDSDomain" name="time_based_dds_app_1Participant">
+            <publisher name="dds_topic_0Publisher">
+                <data_writer name="dds_topic_0Writer" topic_ref="dds_topic_0"/>
+            </publisher>
+        </domain_participant>
+    </domain_participant_library>
+</dds>
