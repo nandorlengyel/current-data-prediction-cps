@@ -1,0 +1,22 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "cps-activity-data-logger"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "cps-activity-data-logger"
+  template:
+    metadata:
+      labels:
+        app: "cps-activity-data-logger"
+    spec:
+      containers:
+        - env:
+          image: "nandorlengyel/cps_activity_data_logger:latest"
+          imagePullPolicy: "IfNotPresent"
+          name: "cps-activity-data-logger"
+      nodeSelector:
+        sensor: photoresistor

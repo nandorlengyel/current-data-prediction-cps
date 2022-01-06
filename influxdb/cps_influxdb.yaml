@@ -2,21 +2,21 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "cps-influxdb-client"
+  name: "cps_influxdb"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "cps-influxdb-client"
+      app: "cps_influxdb"
   template:
     metadata:
       labels:
-        app: "cps-influxdb-client"
+        app: "cps_influxdb"
     spec:
       containers:
         - env:
-          image: "nandorlengyel/cps_influxdb_client:latest"
+          image: "nandorlengyel/cps_influxdb:latest"
           imagePullPolicy: "IfNotPresent"
-          name: "cps-influxdb-client"
+          name: "cps_influxdb"
       nodeSelector:
         server: edge

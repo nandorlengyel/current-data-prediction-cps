@@ -2,21 +2,21 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "cps-influxdb-client"
+  name: "cps_prediction_system"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "cps-influxdb-client"
+      app: "cps_prediction_system"
   template:
     metadata:
       labels:
-        app: "cps-influxdb-client"
+        app: "cps_prediction_system"
     spec:
       containers:
         - env:
-          image: "nandorlengyel/cps_influxdb_client:latest"
+          image: "nandorlengyel/cps_prediction_system:latest"
           imagePullPolicy: "IfNotPresent"
-          name: "cps-influxdb-client"
+          name: "cps_prediction_system"
       nodeSelector:
-        server: edge
+        server: cloud

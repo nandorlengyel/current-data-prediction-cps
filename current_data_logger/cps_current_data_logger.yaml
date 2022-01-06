@@ -2,21 +2,21 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "cps-influxdb-client"
+  name: "cps-current-data-logger"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "cps-influxdb-client"
+      app: "cps-current-data-logger"
   template:
     metadata:
       labels:
-        app: "cps-influxdb-client"
+        app: "cps-current-data-logger"
     spec:
       containers:
         - env:
-          image: "nandorlengyel/cps_influxdb_client:latest"
+          image: "nandorlengyel/cps_current_data_logger:latest"
           imagePullPolicy: "IfNotPresent"
-          name: "cps-influxdb-client"
+          name: "cps-current-data-logger"
       nodeSelector:
-        server: edge
+        sensor: picolog-cm3
