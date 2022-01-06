@@ -16,7 +16,7 @@ spec:
       containers:
         - env:
           image: "nandorlengyel/cps_current_data_logger:latest"
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: "Always"
           name: "cps-current-data-logger"
       nodeSelector:
         sensor: picolog-cm3

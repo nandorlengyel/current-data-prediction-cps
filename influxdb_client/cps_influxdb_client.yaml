@@ -16,7 +16,7 @@ spec:
       containers:
         - env:
           image: "nandorlengyel/cps_influxdb_client:latest"
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: "Always"
           name: "cps-influxdb-client"
       nodeSelector:
         server: edge
