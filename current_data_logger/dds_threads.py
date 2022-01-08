@@ -58,43 +58,45 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
         threading.Thread.__init__(self, target=self.write_data, name=self.publisher_name, daemon=True)         
 
     def write_data(self):
-        while True:
-            self.result_dict = {}
 
-            while True:  # Loop forever
+        CM3 = PicoTechEthernetCM3(ip='169.254.53.98', port=1)
 
-                now = datetime.datetime.now()
-                while now.second == 0:
-                    try:
-                        print(CM3.connect())
-                        print(CM3.lock())
-                        CM3.filter(50)
-                        # print(CM3.EEPROM())
-                        CM3.set('1w', b'Converting\x00')  # channel setup ??
+        self.result_dict = {}
 
-                        for load in next(CM3):       
-                            try:
-                                self.result_dict[load['channel']].append(load['value'])
-                            except KeyError:
-                                self.result_dict[load['channel']] = [load['value']]
+        while True:  # Loop forever
+
+            now = datetime.datetime.now()
+            while now.second == 0:
+                try:
+                    print(CM3.connect())
+                    print(CM3.lock())
+                    CM3.filter(50)
+                    # print(CM3.EEPROM())
+                    CM3.set('1w', b'Converting\x00')  # channel setup ??
+
+                    for load in next(CM3):       
+                        try:
+                            self.result_dict[load['channel']].append(load['value'])
+                        except KeyError:
+                            self.result_dict[load['channel']] = [load['value']]
+
+                        now = datetime.datetime.now()
+                        if now.second == 59:
+
+                            with self.lock: # Protect access to methods on the same Connector                 
+                                output = self.connector.get_output(self.publisher_name + "::" + self.data_writer_name)      
+                                self.produce_data(output)   
+
+                            self.result_dict = {}
 
                             now = datetime.datetime.now()
-                            if now.second == 59:
-
-                                with self.lock: # Protect access to methods on the same Connector                 
-                                    output = self.connector.get_output(self.publisher_name + "::" + self.data_writer_name)      
-                                    self.produce_data(output)   
-
-                                self.result_dict = {}
-
+                            while now.second == 59:
                                 now = datetime.datetime.now()
-                                while now.second == 59:
-                                    now = datetime.datetime.now()
-                            
-                    except requests.exceptions.ConnectionError:
-                        print('Connection Error to InfluxDB')
-                    except socket.timeout:
-                        print('Connection timeout to PicoTech device')
+                        
+                except requests.exceptions.ConnectionError:
+                    print('Connection Error to InfluxDB')
+                except socket.timeout:
+                    print('Connection timeout to PicoTech device')
             
     @abc.abstractmethod
     def produce_data(self, output):
