@@ -2,14 +2,10 @@ import abc
 from abc import ABCMeta
 import threading
 import requests
-import rticonnextdds_connector as rti
-import time
 
 import socket
 import datetime
-import queue
-import os
-from current_data_logger.PicoTechEthernet.PicoTechEthernet import PicoTechEthernetCM3
+from PicoTechEthernet import PicoTechEthernetCM3
 
 class ReaderThread(threading.Thread, metaclass=ABCMeta):
 
