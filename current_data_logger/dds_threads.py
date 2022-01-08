@@ -1,7 +1,6 @@
 import abc
 from abc import ABCMeta
 import threading
-import requests
 
 import socket
 import datetime
@@ -90,8 +89,6 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
 
                             self.result_dict = {}
 
-                except requests.exceptions.ConnectionError:
-                    print('Connection Error to InfluxDB')
                 except socket.timeout:
                     print('Connection timeout to PicoTech device')
             
