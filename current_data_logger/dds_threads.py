@@ -1,8 +1,15 @@
 import abc
 from abc import ABCMeta
 import threading
+import requests
 import rticonnextdds_connector as rti
 import time
+
+import socket
+import datetime
+import queue
+import os
+from current_data_logger.PicoTechEthernet.PicoTechEthernet import PicoTechEthernetCM3
 
 class ReaderThread(threading.Thread, metaclass=ABCMeta):
 
@@ -47,6 +54,8 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
         self.connector = connector
         self.queue = queue
 
+        self.result_dict
+
         self.publisher_name = topic_name + "Publisher"
         self.data_writer_name = topic_name + "Writer"
 
@@ -54,14 +63,42 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
 
     def write_data(self):
         while True:
-            # IMPORTANT: if app is a data source, then uncomment next line, and remove 'self.cache.append(self.queue.get())' line
-            time.sleep(2)
-            # self.cache.append(self.queue.get())
-            with self.lock: # Protect access to methods on the same Connector                 
-                output = self.connector.get_output(self.publisher_name + "::" + self.data_writer_name)      
-                self.produce_data(output)          
-            # IMPORTANT: if app is a data source, remove next line
-            # self.queue.task_done()
+            self.result_dict = {}
+
+            while True:  # Loop forever
+
+                now = datetime.datetime.now()
+                while now.second == 0:
+                    try:
+                        print(CM3.connect())
+                        print(CM3.lock())
+                        CM3.filter(50)
+                        # print(CM3.EEPROM())
+                        CM3.set('1w', b'Converting\x00')  # channel setup ??
+
+                        for load in next(CM3):       
+                            try:
+                                self.result_dict[load['channel']].append(load['value'])
+                            except KeyError:
+                                self.result_dict[load['channel']] = [load['value']]
+
+                            now = datetime.datetime.now()
+                            if now.second == 59:
+
+                                with self.lock: # Protect access to methods on the same Connector                 
+                                    output = self.connector.get_output(self.publisher_name + "::" + self.data_writer_name)      
+                                    self.produce_data(output)   
+
+                                self.result_dict = {}
+
+                                now = datetime.datetime.now()
+                                while now.second == 59:
+                                    now = datetime.datetime.now()
+                            
+                    except requests.exceptions.ConnectionError:
+                        print('Connection Error to InfluxDB')
+                    except socket.timeout:
+                        print('Connection timeout to PicoTech device')
             
     @abc.abstractmethod
     def produce_data(self, output):
