@@ -6,6 +6,7 @@ import requests
 import socket
 import datetime
 from PicoTechEthernet import PicoTechEthernetCM3
+import os 
 
 class ReaderThread(threading.Thread, metaclass=ABCMeta):
 
@@ -50,7 +51,7 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
         self.connector = connector
         self.queue = queue
 
-        self.result_dict
+        self.result_dict = {}
 
         self.publisher_name = topic_name + "Publisher"
         self.data_writer_name = topic_name + "Writer"
@@ -59,7 +60,7 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
 
     def write_data(self):
 
-        CM3 = PicoTechEthernetCM3(ip='169.254.53.98', port=1)
+        CM3 = PicoTechEthernetCM3(ip=os.environ['PICO_IP'], port=1)
 
         self.result_dict = {}
 
@@ -89,10 +90,6 @@ class WriterThread(threading.Thread, metaclass=ABCMeta):
 
                             self.result_dict = {}
 
-                            now = datetime.datetime.now()
-                            while now.second == 59:
-                                now = datetime.datetime.now()
-                        
                 except requests.exceptions.ConnectionError:
                     print('Connection Error to InfluxDB')
                 except socket.timeout:
