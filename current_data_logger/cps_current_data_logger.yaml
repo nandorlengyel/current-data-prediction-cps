@@ -16,7 +16,10 @@ spec:
       containers:
         - env:
           image: "nandorlengyel/cps_current_data_logger:latest"
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: "Always"
           name: "cps-current-data-logger"
+          env:
+          - name: PICO_IP
+            value: "169.254.53.98"
       nodeSelector:
         sensor: picolog-cm3

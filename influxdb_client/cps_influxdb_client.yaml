@@ -16,7 +16,14 @@ spec:
       containers:
         - env:
           image: "nandorlengyel/cps_influxdb_client:latest"
-          imagePullPolicy: "Always"
+          imagePullPolicy: Always
           name: "cps-influxdb-client"
+          env:
+          - name: INFLUXDB_V2_TOKEN
+            value: "afdaNGK3gGikzxEqD0YET0RjNC7QXKz7Z4R3HUMt0jaUdw9PDNeAd0MZVjCh03mYXF8wKQ5vmQoIQpzU7kDbaw=="
+          - name: INFLUXDB_V2_URL
+            value: "http://influxdb-service:8086"
+          - name: INFLUXDB_V2_ORG
+            value: "CPS_HF"
       nodeSelector:
         server: edge

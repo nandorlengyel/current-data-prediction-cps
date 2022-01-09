@@ -1,17 +1,14 @@
 #!/usr/bin/python3
 import sched
 import time
-from influxdb_client import InfluxDBClient, Point
-from influxdb_client.client.write_api import SYNCHRONOUS, WriteOptions
+from influxdb_client import InfluxDBClient
+from influxdb_client.client.write_api import SYNCHRONOUS
 from prophet import Prophet
 import pandas as pd
-from datetime import datetime as dt
 
 s = sched.scheduler(time.time, time.sleep)
 
-token = "9RdpQ1am1pENJhVuPs7aqF5eAg2j1sWMyebe8lRKh-2AgqY-Jz_SkKAN9fjrzK7kUtYylwuHxhSdv1_VANcykw=="
-org = "CPS_HF"
-client = InfluxDBClient(url="http://localhost:8086", token=token, org=org, debug=False)
+client = InfluxDBClient.from_env_properties()
 
 def predict_data(sc):
 	df = query_data()
@@ -21,14 +18,14 @@ def predict_data(sc):
 
 def query_data():	
 	query = '''from(bucket: "MEASUREMENTS") 
-	|> range(start:-180m, stop: -120m)
+	|> range(start:-5m, stop: now())
 	|> filter(fn: (r) => r._measurement == "CurrentData" or r._measurement == "ActivityData")
 	|> window(every: 5m)
   	|> mean()
 	|> duplicate(column: "_stop", as: "ds")
 	'''
 
-	df = client.query_api().query_data_frame(org=org, query=query)
+	df = client.query_api().query_data_frame(query=query)
 	df.drop(columns=['result', 'table','_start','_stop','_field'], inplace= True)
 	df = df.pivot(index="ds",columns='_measurement', values='_value')
 	df.rename(columns={"CurrentData": "y"}, inplace=True)
@@ -62,7 +59,7 @@ def write_data(df):
 	df = df.set_index("_time")
 	print(df)	
 	write_api = client.write_api(write_options=SYNCHRONOUS)
-	write_api.write("PREDICTIONS", org, df, data_frame_measurement_name="CurrentPrediction")
+	write_api.write("PREDICTIONS", df, data_frame_measurement_name="CurrentPrediction")
 
 s.enter(3, 1, predict_data, (s,))
 s.run()

@@ -16,7 +16,15 @@ spec:
       containers:
         - env:
           image: "nandorlengyel/cps_prediction_system:latest"
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: "Always"
           name: "cps_prediction_system"
+          env:
+          - name: INFLUXDB_V2_TOKEN
+            value: "JXEk2_WuPC8mFtGx8d9mn5PeOzZWi3-xsNl78gW2b9Z_syvAhg32FT7wxEO7ggT87pKFFyj4FY6uNU4oHgf0eA=="
+          - name: INFLUXDB_V2_URL
+            value: "http://influxdb-service:8086"
+          - name: INFLUXDB_V2_ORG
+            value: "CPS_HF"
+      # set to cloud
       nodeSelector:
-        server: cloud
+        server: edge

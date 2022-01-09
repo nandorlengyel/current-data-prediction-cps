@@ -18,5 +18,54 @@ spec:
           image: "influxdb:2.0.7"
           imagePullPolicy: "IfNotPresent"
           name: "cps-influxdb"
+          ports:
+            - containerPort: 8086
+          env:
+          - name: INFLUXDB_HTTP_AUTH_ENABLED
+            value: "true"
+          # - name: DOCKER_INFLUXDB_INIT_USERNAME
+          #   value: "USERNAME"
+          # - name: DOCKER_INFLUXDB_INIT_PASSWORD
+          #   value: "PASSWORD"
+          # - name: DOCKER_INFLUXDB_INIT_ORG
+          #   value: "CPS_HF"
+          # - name: DOCKER_INFLUXDB_INIT_BUCKET
+          #   value: "MEASUREMENTS"
+      #     volumeMounts:
+      #     - mountPath: /var/lib/influxdb
+      #       name: var-lib-influxdb
+      # volumes:
+      #   - name: var-lib-influxdb
+      #     persistentVolumeClaim:
+      #       claimName: influxdb-pvc
       nodeSelector:
         server: edge
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb-service
+  labels:
+    app: influxdb-service
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8086
+      targetPort: 8086
+      nodePort: 31761
+  selector:
+    app: cps-influxdb
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   labels:
+#     app: cps-influxdb
+#   name: influxdb-pvc
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Gi
