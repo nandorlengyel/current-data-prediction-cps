@@ -5,10 +5,11 @@ from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
 from prophet import Prophet
 import pandas as pd
+import os
 
 s = sched.scheduler(time.time, time.sleep)
 
-client = InfluxDBClient.from_env_properties()
+client = InfluxDBClient(url=os.environ['INFLUXDB_V2_URL'], org=os.environ['INFLUXDB_V2_ORG'], token=os.environ['INFLUXDB_V2_TOKEN'], debug=True)
 
 def predict_data(sc):
 	df = query_data()
@@ -59,7 +60,7 @@ def write_data(df):
 	df = df.set_index("_time")
 	print(df)	
 	write_api = client.write_api(write_options=SYNCHRONOUS)
-	write_api.write("PREDICTIONS", df, data_frame_measurement_name="CurrentPrediction")
+	print(write_api.write("PREDICTIONS", df, data_frame_measurement_name="CurrentPrediction"))
 
 s.enter(3, 1, predict_data, (s,))
 s.run()

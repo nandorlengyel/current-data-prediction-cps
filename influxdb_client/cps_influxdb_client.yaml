@@ -20,7 +20,7 @@ spec:
           name: "cps-influxdb-client"
           env:
           - name: INFLUXDB_V2_TOKEN
-            value: "afdaNGK3gGikzxEqD0YET0RjNC7QXKz7Z4R3HUMt0jaUdw9PDNeAd0MZVjCh03mYXF8wKQ5vmQoIQpzU7kDbaw=="
+            value: "5NQRQj1ZrNiCMlrg2WQpxn23DYtvkiYptwqdPGBKix9z5zKeuS01HzZP-BaYJzkhXNXEr4WsKmPGx1QpteosPw=="
           - name: INFLUXDB_V2_URL
             value: "http://influxdb-service:8086"
           - name: INFLUXDB_V2_ORG

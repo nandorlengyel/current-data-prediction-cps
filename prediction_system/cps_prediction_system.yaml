@@ -20,7 +20,7 @@ spec:
           name: "cps_prediction_system"
           env:
           - name: INFLUXDB_V2_TOKEN
-            value: "JXEk2_WuPC8mFtGx8d9mn5PeOzZWi3-xsNl78gW2b9Z_syvAhg32FT7wxEO7ggT87pKFFyj4FY6uNU4oHgf0eA=="
+            value: "5NQRQj1ZrNiCMlrg2WQpxn23DYtvkiYptwqdPGBKix9z5zKeuS01HzZP-BaYJzkhXNXEr4WsKmPGx1QpteosPw=="
           - name: INFLUXDB_V2_URL
             value: "http://influxdb-service:8086"
           - name: INFLUXDB_V2_ORG
