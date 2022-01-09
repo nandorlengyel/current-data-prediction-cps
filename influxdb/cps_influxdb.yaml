@@ -1,6 +1,6 @@
 ---
 apiVersion: "apps/v1"
-kind: "Deployment"
+kind: "StatefulSet"
 metadata:
   name: "cps-influxdb"
 spec:
@@ -8,11 +8,16 @@ spec:
   selector:
     matchLabels:
       app: "cps-influxdb"
+  serviceName: influxdb-service
   template:
     metadata:
       labels:
         app: "cps-influxdb"
     spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: influxdb-disk-claim
       containers:
         - env:
           image: "influxdb:2.0.7"
@@ -20,7 +25,14 @@ spec:
           name: "cps-influxdb"
           ports:
             - containerPort: 8086
+          volumeMounts:
+            - mountPath: /var/lib/influxdb2
+              name: data
           env:
+          - name: INFLUXD_BOLT_PATH
+            value: "/var/lib/influxdb2/engine/data/influxd.bolt"
+          - name: INFLUXD_STORAGE_CACHE_SNAPSHOT_WRITE_COLD_DURATION
+            value: "5s"
           - name: INFLUXDB_HTTP_AUTH_ENABLED
             value: "true"
           - name: DOCKER_INFLUXDB_INIT_MODE
@@ -33,13 +45,6 @@ spec:
             value: "CPS_HF"
           - name: DOCKER_INFLUXDB_INIT_BUCKET
             value: "MEASUREMENTS"
-          volumeMounts:
-          - mountPath: /var/lib/influxdb
-            name: var-lib-influxdb
-      volumes:
-        - name: var-lib-influxdb
-          persistentVolumeClaim:
-            claimName: influxdb-pvc
       nodeSelector:
         server: edge
 ---
@@ -62,12 +67,24 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  labels:
-    app: cps-influxdb
-  name: influxdb-pvc
+  name: influxdb-disk-claim
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+     storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: influxdb-disk
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "~/test_volume"
