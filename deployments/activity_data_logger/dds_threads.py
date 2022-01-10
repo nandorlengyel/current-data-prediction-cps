@@ -19,8 +19,7 @@ class ReaderThread(threading.Thread, metaclass=ABCMeta):
             
 
     def read_data(self):
-        while True:
-            
+        while True:      
             with self.lock: # Protect access to methods on the same Connector
                 input = self.connector.get_input(self.subscriber_name + "::" + self.data_reader_name)
             input.wait() # wait outside the lock

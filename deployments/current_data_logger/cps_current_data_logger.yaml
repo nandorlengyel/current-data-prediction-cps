@@ -22,4 +22,6 @@ spec:
           - name: PICO_IP
             value: "169.254.53.98"
       nodeSelector:
-        sensor: picolog-cm3
+        # TODO: uncomment next line
+        #sensor: picolog-cm3
+        sensor: photoresistor
