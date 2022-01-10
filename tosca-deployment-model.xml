@@ -6,7 +6,7 @@
     xmlns:testwineryopentoscaorg="http://test.winery.opentosca.org">
     <ServiceTemplate name="cps-hf" targetNamespace="http://inf.mit.bme.hu/research/edmm/servicetemplates" id="cps-hf">
         <TopologyTemplate>
-            <NodeTemplate name="activity_data_logger" minInstances="1" maxInstances="1" type="mitNodetypes:time_based_dds_app" id="time_based_dds_app_0" winery:x="1232" winery:y="97"
+            <NodeTemplate name="activity_data_logger" minInstances="1" maxInstances="1" type="mitNodetypes:time_based_dds_app" id="time_based_dds_app_0" winery:x="1225" winery:y="88"
                 xmlns:mitNodetypes="http://inf.mit.bme.hu/research/edmm/nodetypes">
                 <Properties>
                     <Properties xmlns="http://www.example.org"/>
@@ -26,7 +26,7 @@
                         xmlns:rtyIgeneral="http://inf.mit.bme.hu/research/edmm/requirementtypes"/>
                 </Requirements>
             </NodeTemplate>
-            <NodeTemplate name="inluxdb_client" minInstances="1" maxInstances="1" type="mitNodetypes:time_based_dds_app" id="time_based_dds_app_2" winery:x="641" winery:y="124"
+            <NodeTemplate name="inluxdb_client" minInstances="1" maxInstances="1" type="mitNodetypes:time_based_dds_app" id="time_based_dds_app_2" winery:x="644" winery:y="110"
                 xmlns:mitNodetypes="http://inf.mit.bme.hu/research/edmm/nodetypes">
                 <Properties>
                     <Properties xmlns="http://www.example.org"/>
@@ -74,7 +74,7 @@
                         xmlns:ctyIgeneral="http://inf.mit.bme.hu/research/edmm/capabilitytypes"/>
                 </Capabilities>
             </NodeTemplate>
-            <NodeTemplate name="edge" minInstances="1" maxInstances="1" type="ntyIgeneral:Compute" id="Compute_1" winery:x="670" winery:y="468"
+            <NodeTemplate name="edge" minInstances="1" maxInstances="1" type="ntyIgeneral:Compute" id="Compute_1" winery:x="644" winery:y="489"
                 xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
                 <Properties>
                     <Properties xmlns="http://www.example.org">
@@ -90,7 +90,7 @@
                         xmlns:ctyIgeneral1="http://www.example.org/tosca/capabilitytypes"/>
                 </Capabilities>
             </NodeTemplate>
-            <NodeTemplate name="rpi_02" minInstances="1" maxInstances="1" type="ntyIgeneral:Compute" id="Compute_2" winery:x="1229" winery:y="440"
+            <NodeTemplate name="rpi_02" minInstances="1" maxInstances="1" type="ntyIgeneral:Compute" id="Compute_2" winery:x="1225" winery:y="440"
                 xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
                 <Properties>
                     <Properties xmlns="http://www.example.org">
@@ -106,7 +106,7 @@
                         xmlns:ctyIgeneral1="http://www.example.org/tosca/capabilitytypes"/>
                 </Capabilities>
             </NodeTemplate>
-            <NodeTemplate name="InfluxDB" minInstances="1" maxInstances="1" type="ntyIgeneral:Software_Component" id="Software_Component_1" winery:x="966" winery:y="343"
+            <NodeTemplate name="InfluxDB" minInstances="1" maxInstances="1" type="ntyIgeneral:Software_Component" id="Software_Component_1" winery:x="970" winery:y="389"
                 xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
                 <Properties>
                     <Properties xmlns="http://www.example.org"/>
@@ -116,7 +116,7 @@
                         xmlns:rtyIgeneral="http://inf.mit.bme.hu/research/edmm/requirementtypes"/>
                 </Requirements>
             </NodeTemplate>
-            <NodeTemplate name="Prediction_app" minInstances="1" maxInstances="1" type="ntyIgeneral:Software_Component" id="Software_Component_0" winery:x="357" winery:y="306"
+            <NodeTemplate name="Prediction_app" minInstances="1" maxInstances="1" type="ntyIgeneral:Software_Component" id="Software_Component_0" winery:x="319" winery:y="389"
                 xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
                 <Properties>
                     <Properties xmlns="http://www.example.org"/>
@@ -198,14 +198,6 @@
                 <SourceElement ref="time_based_dds_app_0"/>
                 <TargetElement ref="dds_topic_1"/>
             </RelationshipTemplate>
-            <RelationshipTemplate name="ConnectsTo" type="tyIgeneral:ConnectsTo" id="con_ConnectsTo_0"
-                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
-                <Properties>
-                    <Properties xmlns="http://www.example.org"/>
-                </Properties>
-                <SourceElement ref="Software_Component_0"/>
-                <TargetElement ref="time_based_dds_app_2"/>
-            </RelationshipTemplate>
             <RelationshipTemplate name="HostedOn" type="tyIgeneral:HostedOn" id="con_HostedOn_4"
                 xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
                 <Properties>
@@ -213,6 +205,14 @@
                 </Properties>
                 <SourceElement ref="Software_Component_0"/>
                 <TargetElement ref="Compute_1"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="ConnectsTo" type="tyIgeneral:ConnectsTo" id="con_ConnectsTo_0"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="Software_Component_0"/>
+                <TargetElement ref="Software_Component_1"/>
             </RelationshipTemplate>
         </TopologyTemplate>
     </ServiceTemplate>
