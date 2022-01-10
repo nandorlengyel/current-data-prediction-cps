@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Definitions targetNamespace="http://inf.mit.bme.hu/research/edmm/servicetemplates" id="winery-defs-for_steIgeneral4-cps-hf"
+    xmlns="http://docs.oasis-open.org/tosca/ns/2011/12"
+    xmlns:selfservice="http://www.eclipse.org/winery/model/selfservice"
+    xmlns:winery="http://www.opentosca.org/winery/extensions/tosca/2013/02/12"
+    xmlns:testwineryopentoscaorg="http://test.winery.opentosca.org">
+    <ServiceTemplate name="cps-hf" targetNamespace="http://inf.mit.bme.hu/research/edmm/servicetemplates" id="cps-hf">
+        <TopologyTemplate>
+            <NodeTemplate name="activity_data_logger" minInstances="1" maxInstances="1" type="mitNodetypes:time_based_dds_app" id="time_based_dds_app_0" winery:x="1232" winery:y="97"
+                xmlns:mitNodetypes="http://inf.mit.bme.hu/research/edmm/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <Requirements>
+                    <Requirement name="activity_sensor" type="rtyIgeneral:activity_sensor" id="activity_sensor"
+                        xmlns:rtyIgeneral="http://inf.mit.bme.hu/research/edmm/requirementtypes"/>
+                </Requirements>
+            </NodeTemplate>
+            <NodeTemplate name="current_data_logger" minInstances="1" maxInstances="1" type="mitNodetypes:time_based_dds_app" id="time_based_dds_app_1" winery:x="65" winery:y="97"
+                xmlns:mitNodetypes="http://inf.mit.bme.hu/research/edmm/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <Requirements>
+                    <Requirement name="cm3_current_data_logger" capability="cm3_current_data_logger" node="Compute_0" relationship="con_HostedOn_0" type="rtyIgeneral:cm3_current_data_logger" id="time_based_dds_app_1_req_cm3_current_data_logger_Compute_0"
+                        xmlns:rtyIgeneral="http://inf.mit.bme.hu/research/edmm/requirementtypes"/>
+                </Requirements>
+            </NodeTemplate>
+            <NodeTemplate name="inluxdb_client" minInstances="1" maxInstances="1" type="mitNodetypes:time_based_dds_app" id="time_based_dds_app_2" winery:x="641" winery:y="124"
+                xmlns:mitNodetypes="http://inf.mit.bme.hu/research/edmm/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <Requirements>
+                    <Requirement name="edge_server" type="rtyIgeneral:edge_server" id="edge_server"
+                        xmlns:rtyIgeneral="http://inf.mit.bme.hu/research/edmm/requirementtypes"/>
+                </Requirements>
+            </NodeTemplate>
+            <NodeTemplate name="current_data" minInstances="1" maxInstances="1" type="mitNodetypes:dds_topic" id="dds_topic_0" winery:x="357" winery:y="76"
+                xmlns:mitNodetypes="http://inf.mit.bme.hu/research/edmm/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <DeploymentArtifacts>
+                    <DeploymentArtifact name="current_data.idl" artifactType="mitArtifacttypes:IDL" artifactRef="mitArtifacttemplates:current_data.idl"
+                        xmlns:mitArtifacttemplates="http://inf.mit.bme.hu/research/edmm/artifacttemplates"
+                        xmlns:mitArtifacttypes="http://inf.mit.bme.hu/research/edmm/artifacttypes"/>
+                </DeploymentArtifacts>
+            </NodeTemplate>
+            <NodeTemplate name="activity_data" minInstances="1" maxInstances="1" type="mitNodetypes:dds_topic" id="dds_topic_1" winery:x="927" winery:y="68"
+                xmlns:mitNodetypes="http://inf.mit.bme.hu/research/edmm/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <DeploymentArtifacts>
+                    <DeploymentArtifact name="activity_data.idl" artifactType="mitArtifacttypes:IDL" artifactRef="mitArtifacttemplates:activity_data.idl"
+                        xmlns:mitArtifacttemplates="http://inf.mit.bme.hu/research/edmm/artifacttemplates"
+                        xmlns:mitArtifacttypes="http://inf.mit.bme.hu/research/edmm/artifacttypes"/>
+                </DeploymentArtifacts>
+            </NodeTemplate>
+            <NodeTemplate name="rpi_01" minInstances="1" maxInstances="1" type="ntyIgeneral:Compute" id="Compute_0" winery:x="66" winery:y="421"
+                xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org">
+                        <os_family/>
+                        <machine_image/>
+                        <instance_type/>
+                        <key_name/>
+                        <public_key/>
+                    </Properties>
+                </Properties>
+                <Capabilities>
+                    <Capability name="cm3_current_data_logger" type="ctyIgeneral:cm3_current_data_logger" id="cm3_current_data_logger"
+                        xmlns:ctyIgeneral="http://inf.mit.bme.hu/research/edmm/capabilitytypes"/>
+                </Capabilities>
+            </NodeTemplate>
+            <NodeTemplate name="edge" minInstances="1" maxInstances="1" type="ntyIgeneral:Compute" id="Compute_1" winery:x="670" winery:y="468"
+                xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org">
+                        <os_family/>
+                        <machine_image/>
+                        <instance_type/>
+                        <key_name/>
+                        <public_key/>
+                    </Properties>
+                </Properties>
+                <Capabilities>
+                    <Capability name="edge_server" type="ctyIgeneral1:edge_server" id="edge_server_cap"
+                        xmlns:ctyIgeneral1="http://www.example.org/tosca/capabilitytypes"/>
+                </Capabilities>
+            </NodeTemplate>
+            <NodeTemplate name="rpi_02" minInstances="1" maxInstances="1" type="ntyIgeneral:Compute" id="Compute_2" winery:x="1229" winery:y="440"
+                xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org">
+                        <os_family/>
+                        <machine_image/>
+                        <instance_type/>
+                        <key_name/>
+                        <public_key/>
+                    </Properties>
+                </Properties>
+                <Capabilities>
+                    <Capability name="activity_sensor" type="ctyIgeneral1:activity_sensor" id="activity_sensor_cap"
+                        xmlns:ctyIgeneral1="http://www.example.org/tosca/capabilitytypes"/>
+                </Capabilities>
+            </NodeTemplate>
+            <NodeTemplate name="InfluxDB" minInstances="1" maxInstances="1" type="ntyIgeneral:Software_Component" id="Software_Component_1" winery:x="966" winery:y="343"
+                xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <Requirements>
+                    <Requirement name="edge_server" type="rtyIgeneral:edge_server" id="edge_server_req_02"
+                        xmlns:rtyIgeneral="http://inf.mit.bme.hu/research/edmm/requirementtypes"/>
+                </Requirements>
+            </NodeTemplate>
+            <NodeTemplate name="Prediction_app" minInstances="1" maxInstances="1" type="ntyIgeneral:Software_Component" id="Software_Component_0" winery:x="357" winery:y="306"
+                xmlns:ntyIgeneral="https://edmm.uni-stuttgart.de/nodetypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <Requirements>
+                    <Requirement name="edge_server" type="rtyIgeneral:edge_server" id="edge_server_02"
+                        xmlns:rtyIgeneral="http://inf.mit.bme.hu/research/edmm/requirementtypes"/>
+                </Requirements>
+            </NodeTemplate>
+            <RelationshipTemplate name="PublishTo" type="mitRelationtypes:PublishTo" id="con_PublishTo_0"
+                xmlns:mitRelationtypes="http://inf.mit.bme.hu/research/edmm/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_1"/>
+                <TargetElement ref="dds_topic_0"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="SubscribeTo" type="mitRelationtypes:SubscribeTo" id="con_SubscribeTo_0"
+                xmlns:mitRelationtypes="http://inf.mit.bme.hu/research/edmm/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_2"/>
+                <TargetElement ref="dds_topic_0"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="SubscribeTo" type="mitRelationtypes:SubscribeTo" id="con_SubscribeTo_1"
+                xmlns:mitRelationtypes="http://inf.mit.bme.hu/research/edmm/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_2"/>
+                <TargetElement ref="dds_topic_1"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="HostedOn" type="tyIgeneral:HostedOn" id="con_HostedOn_1"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_2"/>
+                <TargetElement ref="Compute_1"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="ConnectsTo" type="tyIgeneral:ConnectsTo" id="con_ConnectsTo_1"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_2"/>
+                <TargetElement ref="Software_Component_1"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="HostedOn" type="tyIgeneral:HostedOn" id="con_HostedOn_3"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="Software_Component_1"/>
+                <TargetElement ref="Compute_1"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="HostedOn" type="tyIgeneral:HostedOn" id="con_HostedOn_0"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_1_req_cm3_current_data_logger_Compute_0"/>
+                <TargetElement ref="cm3_current_data_logger"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="HostedOn" type="tyIgeneral:HostedOn" id="con_HostedOn_2"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_0"/>
+                <TargetElement ref="Compute_2"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="PublishTo" type="mitRelationtypes:PublishTo" id="con_PublishTo_1"
+                xmlns:mitRelationtypes="http://inf.mit.bme.hu/research/edmm/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="time_based_dds_app_0"/>
+                <TargetElement ref="dds_topic_1"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="ConnectsTo" type="tyIgeneral:ConnectsTo" id="con_ConnectsTo_0"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="Software_Component_0"/>
+                <TargetElement ref="time_based_dds_app_2"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate name="HostedOn" type="tyIgeneral:HostedOn" id="con_HostedOn_4"
+                xmlns:tyIgeneral="https://edmm.uni-stuttgart.de/relationtypes">
+                <Properties>
+                    <Properties xmlns="http://www.example.org"/>
+                </Properties>
+                <SourceElement ref="Software_Component_0"/>
+                <TargetElement ref="Compute_1"/>
+            </RelationshipTemplate>
+        </TopologyTemplate>
+    </ServiceTemplate>
+</Definitions>
