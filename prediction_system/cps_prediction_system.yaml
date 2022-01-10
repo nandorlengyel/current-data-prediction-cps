@@ -2,25 +2,25 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "cps_prediction_system"
+  name: "cps-prediction-system"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "cps_prediction_system"
+      app: "cps-prediction-system"
   template:
     metadata:
       labels:
-        app: "cps_prediction_system"
+        app: "cps-prediction-system"
     spec:
       containers:
         - env:
           image: "nandorlengyel/cps_prediction_system:latest"
           imagePullPolicy: "Always"
-          name: "cps_prediction_system"
+          name: "cps-prediction-system"
           env:
           - name: INFLUXDB_V2_TOKEN
-            value: "5NQRQj1ZrNiCMlrg2WQpxn23DYtvkiYptwqdPGBKix9z5zKeuS01HzZP-BaYJzkhXNXEr4WsKmPGx1QpteosPw=="
+            value: "COh369Rkk5vK4ijGCi1cwgUCxyI9jCLlWMP7EEcsPS7zyMHnPcfZRSs6sgtWbJEir4sztTIPhzuOeR2jHgekDQ=="
           - name: INFLUXDB_V2_URL
             value: "http://influxdb-service:8086"
           - name: INFLUXDB_V2_ORG

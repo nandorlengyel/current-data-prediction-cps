@@ -8,8 +8,9 @@ import pandas as pd
 import os
 
 s = sched.scheduler(time.time, time.sleep)
+org=os.environ['INFLUXDB_V2_ORG']
 
-client = InfluxDBClient(url=os.environ['INFLUXDB_V2_URL'], org=os.environ['INFLUXDB_V2_ORG'], token=os.environ['INFLUXDB_V2_TOKEN'], debug=True)
+client = InfluxDBClient(url=os.environ['INFLUXDB_V2_URL'], org=org, token=os.environ['INFLUXDB_V2_TOKEN'], debug=True)
 
 def predict_data(sc):
 	df = query_data()
@@ -60,7 +61,7 @@ def write_data(df):
 	df = df.set_index("_time")
 	print(df)	
 	write_api = client.write_api(write_options=SYNCHRONOUS)
-	print(write_api.write("PREDICTIONS", df, data_frame_measurement_name="CurrentPrediction"))
+	print(write_api.write("PREDICTIONS",org, df, data_frame_measurement_name="CurrentPrediction"))
 
 s.enter(3, 1, predict_data, (s,))
 s.run()
