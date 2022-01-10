@@ -1,0 +1,4 @@
+struct CurrentData {
+    string timeStamp;
+    double currentData;
+};

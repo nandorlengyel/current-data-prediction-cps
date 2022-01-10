@@ -1,0 +1,4 @@
+struct ActivityData {
+    string timeStamp;
+    double activityData;
+};
